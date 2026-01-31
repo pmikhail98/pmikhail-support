@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>P.Mikhail | TON Support</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #0f0f1a, #14142b, #0d1b2a, #000814);
+    background-size: 400% 400%;
+    animation: gradient 12s ease infinite;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.card {
+    background: #121212;
+    padding: 30px;
+    border-radius: 18px;
+    max-width: 520px;
+    width: 92%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0,170,255,0.25);
+    border: 1px solid #2a2a2a;
+    position: relative;
+}
+
+.lang-switch {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #00aaff;
+}
+
+/* PROFILE IMAGE */
+.avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 12px;
+    border: 2px solid #00aaff;
+    display: block;
+}
+
+h1 { margin: 5px 0; }
+
+.role {
+    color: #00aaff;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.desc {
+    font-size: 14px;
+    color: #bfbfbf;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.wallet {
+    background: #0a0a0a;
+    padding: 12px;
+    border-radius: 8px;
+    word-break: break-all;
+    border: 1px solid #333;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+button {
+    background: linear-gradient(45deg, #0099ff, #00d4ff);
+    border: none;
+    color: white;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    margin: 6px 4px;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.08);
+}
+
+#qrcode {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+}
+
+.note {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="lang-switch" onclick="toggleLang()">RU / EN</div>
+
+    <!-- PROFILE PICTURE -->
+    <img src="Pmi.png" alt="Profile" class="avatar">
+
+    <h1>P.Mikhail</h1>
+    <div class="role">Digital Artist & Developer in Progress</div>
+
+    <div class="desc" id="descText"></div>
+
+    <div class="wallet" id="wallet">
+        UQCFn3AfgM9T263cRBKFuRDK6QL5LxUmY4Cy4r9uNlIHxpLj
+    </div>
+
+    <button onclick="copyWallet()" id="copyBtn"></button>
+
+    <div>
+        <button onclick="sendTON(1)">1 TON</button>
+        <button onclick="sendTON(5)">5 TON</button>
+        <button onclick="sendTON(10)">10 TON</button>
+    </div>
+
+    <div id="qrcode"></div>
+    <div class="note">TON Network</div>
+</div>
+
+<script>
+const walletAddress = "UQCFn3AfgM9T263cRBKFuRDK6QL5LxUmY4Cy4r9uNlIHxpLj";
+let currentLang = "ru";
+
+const texts = {
+    ru: {
+        desc: "Сейчас без работы, учу кодинг, чтобы попасть в айти. Если хотите поддержать — можете отправить TON.",
+        copy: "Копировать кошелёк"
+    },
+    en: {
+        desc: "Currently unemployed, learning coding to get into IT. You can support me by sending TON.",
+        copy: "Copy Wallet"
+    }
+};
+
+function updateLanguage() {
+    document.getElementById("descText").innerText = texts[currentLang].desc;
+    document.getElementById("copyBtn").innerText = texts[currentLang].copy;
+}
+
+function toggleLang() {
+    currentLang = currentLang === "ru" ? "en" : "ru";
+    updateLanguage();
+}
+
+function copyWallet() {
+    navigator.clipboard.writeText(walletAddress);
+    alert("Copied!");
+}
+
+function sendTON(amount) {
+    window.location.href = `ton://transfer/${walletAddress}?amount=${amount}`;
+}
+
+new QRCode(document.getElementById("qrcode"), {
+    text: "ton://transfer/" + walletAddress,
+    width: 170,
+    height: 170
+});
+
+updateLanguage();
+</script>
+
+</body>
+</html>
